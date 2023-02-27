@@ -1,14 +1,13 @@
-version: '1.0'
+version: "1.0"
 
 services:
-
-  paper:
-    image: marctv/minecraft-papermc-server:latest
-    restart: "no"
-    environment:
-      MEMORYSIZE='1G'
-      PAPERMC_FLAGS=''
-    ports:
-      - "25565:25565"
-    volumes:
-      - /home/skura/service/paper-dev:/data:rw \
+    paper:
+        image: marctv/minecraft-papermc-server:latest
+        restart: "no"
+        environment:
+            - MEMORYSIZE='1G'
+            - PAPERMC_FLAGS=''
+        ports:
+            - "25565:25565"
+        volumes:
+            - /home/skura/service/paper-dev:/data:rw \
