@@ -5,8 +5,8 @@ services:
         image: marctv/minecraft-papermc-server:latest
         restart: "no"
         environment:
-            - MEMORYSIZE='1G'
-            - PAPERMC_FLAGS=''
+            - MEMORYSIZE=1G
+            - PAPERMC_FLAGS=""
         ports:
             - "25565:25565"
         volumes:
