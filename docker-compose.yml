@@ -1,0 +1,15 @@
+version: "3"
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    user: 1000:1000 # should be owner of volumes
+    ports:
+      - "4533:4533"
+    restart: unless-stopped
+    environment:
+      ND_LOGLEVEL: info
+      ND_BASEURL: ""
+    volumes:
+      - "/home/skura/service/navidrome:/data"
+      - "/home/share/sound:/music:ro"
+    restart: always
