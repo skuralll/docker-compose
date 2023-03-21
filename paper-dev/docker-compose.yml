@@ -12,6 +12,8 @@ services:
             - "25565:25565"
         volumes:
             - /home/skura/service/paper-dev:/data:rw \
+        stdin_open: true
+        tty: true
             
     # MariaDB
     db:
