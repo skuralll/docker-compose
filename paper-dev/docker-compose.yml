@@ -14,9 +14,12 @@ services:
             - /home/skura/service/paper-dev:/data:rw \
         stdin_open: true
         tty: true
+        networks:
+            - paperNetwork
             
     # MariaDB
     db:
+        container_name: mariaDB
         restart: unless-stopped
         image: mariadb:10.7.3-focal
         volumes:
@@ -28,6 +31,8 @@ services:
             TZ: 'Asia/Tokyo'
             MYSQL_ROOT_PASSWORD: 'root'
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+        networks:
+            - paperNetwork
         
     phpmyadmin:
         image: phpmyadmin:latest
@@ -42,3 +47,8 @@ services:
             - ./phpmyadmin/sessions:/sessions
         depends_on:
             - "db"
+        networks:
+            - paperNetwork
+
+networks:
+    paperNetwork:
