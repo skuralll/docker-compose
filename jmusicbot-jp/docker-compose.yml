@@ -1,0 +1,6 @@
+version: "1"
+services:
+  jmusicbot-jp:
+    image: cyberrex/jmusicbot-jp:latest
+    volumes:
+      - "/home/skura/service/jmusicbot-jp/config.txt:/opt/jmusicbot/config.txt"
