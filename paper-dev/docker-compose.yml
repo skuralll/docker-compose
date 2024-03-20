@@ -6,8 +6,10 @@ services:
         image: marctv/minecraft-papermc-server:latest
         restart: "no"
         environment:
-            - MEMORYSIZE=1G
+            - MEMORYSIZE=2G
             - PAPERMC_FLAGS=""
+            - PUID=1000
+            - PGID=1000
         ports:
             - "25565:25565"
         volumes:
@@ -16,24 +18,24 @@ services:
         tty: true
         networks:
             - paperNetwork
-            
+
     # MariaDB
     db:
         container_name: mariaDB
         restart: unless-stopped
         image: mariadb:10.7.3-focal
         volumes:
-            - ./db/data:/var/lib/mysql
-            - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
-            - ./db/log:/var/log/mysql
-            - ./db/init:/docker-entrypoint-initdb.d
+            - /home/skura/service/paper-dev/db/data:/var/lib/mysql
+            - /home/skura/service/paper-dev/db/my.cnf:/etc/mysql/conf.d/my.cnf
+            - /home/skura/service/paper-dev/db/log:/var/log/mysql
+            - /home/skura/service/paper-dev/db/init:/docker-entrypoint-initdb.d
         environment:
-            TZ: 'Asia/Tokyo'
-            MYSQL_ROOT_PASSWORD: 'root'
+            TZ: "Asia/Tokyo"
+            MYSQL_ROOT_PASSWORD: "root"
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
         networks:
             - paperNetwork
-        
+
     phpmyadmin:
         image: phpmyadmin:latest
         environment:
@@ -44,7 +46,7 @@ services:
         ports:
             - 8889:80
         volumes:
-            - ./phpmyadmin/sessions:/sessions
+            - /home/skura/service/paper-dev/phpmyadmin/sessions:/sessions
         depends_on:
             - "db"
         networks:

@@ -1,4 +1,4 @@
-worker_processes 2;
+worker_processes auto;
 
 events {
     worker_connections 1024;
@@ -19,6 +19,5 @@ stream {
         access_log /var/log/nginx/access.log proxy buffer=32k;
         listen 19132 udp;
         proxy_pass minecraft_udp_upstreams;
-        proxy_timeout 60s;
     }
 }
