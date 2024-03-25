@@ -11,13 +11,29 @@ services:
       - PUID=1000
       - PGID=1000
     ports:
-      - "25565:25565"
       - "3000:3000"
       - "8080:3001"
     volumes:
       - /home/skura/service/paper-dev:/data:rw \
     stdin_open: true
     tty: true
+    networks:
+      - paperNetwork
+
+  # Velocity
+  proxy:
+    image: itzg/bungeecord
+    ports:
+      - "25565:25565"
+    tty: true
+    stdin_open: true
+    restart: always
+    # データ永続化
+    volumes:
+      - /home/skura/service/paper-dev/velocity:/server
+    environment:
+      TYPE: "VELOCITY"
+      MEMORY: "512M"
     networks:
       - paperNetwork
 
