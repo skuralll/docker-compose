@@ -7,52 +7,55 @@ services:
     restart: "always"
     environment:
       - MEMORYSIZE=2G
-      - PAPERMC_FLAGS=""
+      # - PAPERMC_FLAGS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      # - JAVAFLAGS=""
       - PUID=1000
       - PGID=1000
     ports:
       - "25565:25565"
       - "3000:3000"
       - "8080:3001"
+      - "5005:5005"
     volumes:
-      - /home/skura/service/paper-dev:/data:rw \
+      - /home/skura/service/paper-dev/server:/data:rw \
     stdin_open: true
     tty: true
     networks:
       - paperNetwork
 
-  # MariaDB
-  db:
-    container_name: mariaDB
-    restart: unless-stopped
-    image: mariadb:10.7.3-focal
-    volumes:
-      - /home/skura/service/paper-dev/db/data:/var/lib/mysql
-      - /home/skura/service/paper-dev/db/my.cnf:/etc/mysql/conf.d/my.cnf
-      - /home/skura/service/paper-dev/db/log:/var/log/mysql
-      - /home/skura/service/paper-dev/db/init:/docker-entrypoint-initdb.d
+  # MySQL
+  mysql:
+    image: mysql:8.0.27
+    ports:
+      - "3306:3306"
     environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
       TZ: "Asia/Tokyo"
-      MYSQL_ROOT_PASSWORD: "root"
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+    volumes:
+      - db-data:/var/lib/mysql
     networks:
       - paperNetwork
 
+  # phpMyAdmin
   phpmyadmin:
-    image: phpmyadmin:latest
+    image: phpmyadmin
+    depends_on:
+      - mysql
     environment:
       - PMA_ARBITRARY=1
-      - PMA_HOST=db
+      - PMA_HOSTS=mysql
       - PMA_USER=root
-      - PMA_PASSWORD=root
+      - PMA_PASSWORD=mysql
     ports:
-      - 8889:80
-    volumes:
-      - /home/skura/service/paper-dev/phpmyadmin/sessions:/sessions
-    depends_on:
-      - "db"
+      - "3001:80"
     networks:
       - paperNetwork
 
 networks:
   paperNetwork:
+
+volumes:
+  db-data:
