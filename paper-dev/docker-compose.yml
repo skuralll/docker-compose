@@ -7,6 +7,7 @@ services:
     restart: "always"
     environment:
       - MEMORYSIZE=2G
+      - PAPERMC_FLAGS=""
       # - PAPERMC_FLAGS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
       # - JAVAFLAGS=""
       - PUID=1000
@@ -14,8 +15,7 @@ services:
     ports:
       - "25565:25565"
       - "3000:3000"
-      - "8080:3001"
-      - "5005:5005"
+      - "3002:8080"
     volumes:
       - /home/skura/service/paper-dev/server:/data:rw \
     stdin_open: true
