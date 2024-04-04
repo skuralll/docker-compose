@@ -1,0 +1,49 @@
+version: '3'
+services:
+  bot:
+    image: ghcr.io/mtripg6666tdr/discord-music-bot:latest
+    container_name: dsmb-instance
+    restart: always
+    env_file:
+      - "/home/skura/service/simple-music-bot/.env"
+    environment:
+      - DB_URL=mongodb://dsmb:hogehoge@mongo:27017/
+    volumes:
+      - type: bind
+        # config.jsonのパスを指定
+        source: "/home/skura/service/simple-music-bot/config.json"
+        target: "/app/config.json"
+      - type: bind
+        # ログの保存先を指定
+        source: "/home/skura/service/simple-music-bot/log"
+        target: "/app/logs"
+      - type: volume
+        source: dsmb-bin
+        target: "/app/bin"
+      - type: volume
+        source: dsmb-cache
+        target: "/app/cache"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=dsmb
+      - MONGO_INITDB_ROOT_PASSWORD=hogehoge
+    ports:
+      - 27017:27017
+    volumes:
+      - type: volume
+        source: dsmb-mongo-db
+        target: /data/db
+      - type: volume
+        source: dsmb-mongo-config-db
+        target: /data/configdb
+
+volumes:
+  dsmb-bin:
+  dsmb-cache:
+  dsmb-mongo-db:
+  dsmb-mongo-config-db:
