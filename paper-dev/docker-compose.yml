@@ -3,7 +3,7 @@ version: "1.0"
 services:
   # PaperMC
   paper:
-    image: marctv/minecraft-papermc-server:latest
+    image: marctv/minecraft-papermc-server:1.21-44
     restart: "always"
     environment:
       - MEMORYSIZE=2G
