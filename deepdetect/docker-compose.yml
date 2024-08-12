@@ -1,0 +1,11 @@
+services:
+  deepdetect:
+    image: docker.jolibrain.com/deepdetect_cpu
+    container_name: deepdetect
+    ports:
+      - "8080:8080"
+    volumes:
+      - /home/skura/service/deepdetect:/data:rw \
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
